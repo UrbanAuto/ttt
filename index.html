@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Auto | Кабінет клієнта</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --surface: #ffffff;
+      --surface-soft: #fbfaf7;
+      --ink: #18191d;
+      --muted: #76716a;
+      --line: #e7e0d7;
+      --dark: #121316;
+      --accent: #f47b20;
+      --accent-soft: #fff0e2;
+      --green: #1f9d67;
+      --green-soft: #e9f7f0;
+      --yellow: #b98318;
+      --yellow-soft: #fff6df;
+      --blue: #2f6fed;
+      --blue-soft: #eaf1ff;
+      --shadow: 0 22px 60px rgba(33, 28, 22, 0.09);
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(246, 244, 239, 0.9)),
+        linear-gradient(135deg, #faf7f0 0%, #f6f4ef 46%, #efebe4 100%);
+      color: var(--ink);
+      font-family: "Manrope", "Aptos", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 20px 0 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin: 0 0 24px;
+      padding: 14px 20px;
+      background: rgba(246, 244, 239, 0.86);
+      border-bottom: 1px solid rgba(231, 224, 215, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), #ffb067);
+      color: #17120f;
+      font-weight: 900;
+      box-shadow: 0 14px 34px rgba(244, 123, 32, 0.3);
+    }
+
+    .brand-text strong,
+    .brand-text span {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .brand-text strong {
+      font-size: 15px;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-self: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status-chip b {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .client-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: end;
+      min-height: 42px;
+      padding: 6px 7px 6px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 10px 28px rgba(33, 28, 22, 0.05);
+    }
+
+    .client-pill span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .client-avatar {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--dark);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 0 0;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-tabs a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: 0.18s ease;
+    }
+
+    .nav-tabs a:hover,
+    .nav-tabs a.active {
+      border-color: var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    section {
+      scroll-margin-top: 118px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.22fr) minmax(300px, 0.78fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 500px;
+      padding: 32px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(115deg, rgba(18, 19, 22, 0.96) 0%, rgba(18, 19, 22, 0.82) 48%, rgba(18, 19, 22, 0.2) 100%),
+        url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1500&q=82") center / cover;
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(244, 123, 32, 0.18);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 96px 0 18px;
+      font-size: clamp(36px, 5vw, 68px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hero-message {
+      max-width: 650px;
+      margin-bottom: 26px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 10px;
+      max-width: 800px;
+    }
+
+    .hero-facts div {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-facts span {
+      display: block;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .hero-facts strong {
+      display: block;
+      margin-top: 8px;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      font-weight: 900;
+      transition: 0.18s ease;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #201409;
+      box-shadow: 0 14px 32px rgba(244, 123, 32, 0.28);
+    }
+
+    .button.primary:hover {
+      transform: translateY(-1px);
+      background: #ff8b35;
+    }
+
+    .button.ghost {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .button.light {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .summary-card,
+    .section-card,
+    .stage-card,
+    .photo-stage,
+    .doc-item,
+    .transaction,
+    .event-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card {
+      display: grid;
+      gap: 16px;
+      padding: 24px;
+    }
+
+    .summary-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .summary-head h2,
+    .section-head h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .summary-head p,
+    .section-head p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #c96012;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .badge.yellow {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+    }
+
+    .badge.blue {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .progress-number {
+      display: grid;
+      place-items: center;
+      width: 164px;
+      height: 164px;
+      margin: 6px auto 0;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0 45%, #eee6dc 45% 100%);
+    }
+
+    .progress-number div {
+      display: grid;
+      place-items: center;
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background: var(--surface);
+    }
+
+    .progress-number strong {
+      display: block;
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .progress-number span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .next-step {
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .next-step span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .next-step strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .quick-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 14px 36px rgba(33, 28, 22, 0.05);
+    }
+
+    .quick-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .quick-card strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .quick-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .section-card {
+      margin-top: 18px;
+      padding: 26px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .stage-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      box-shadow: none;
+      background: var(--surface-soft);
+    }
+
+    .stage-card.done,
+    .stage-card.active {
+      background: var(--surface);
+    }
+
+    .stage-marker {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #eee8df;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .stage-card.done .stage-marker {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .stage-card.active .stage-marker {
+      background: var(--accent);
+      color: #211306;
+      box-shadow: 0 0 0 8px rgba(244, 123, 32, 0.12);
+    }
+
+    .stage-main h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .stage-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 9px 0;
+    }
+
+    .stage-main p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .stage-action {
+      align-self: center;
+    }
+
+    .photo-groups {
+      display: grid;
+      gap: 18px;
+    }
+
+    .photo-stage {
+      padding: 18px;
+      box-shadow: none;
+      background: var(--surface-soft);
+    }
+
+    .photo-stage-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .photo-stage-head h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .photo-thumb {
+      position: relative;
+      overflow: hidden;
+      min-height: 150px;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--photo) center / cover;
+      color: #fff;
+      text-align: left;
+      box-shadow: 0 12px 28px rgba(33, 28, 22, 0.1);
+    }
+
+    .empty-stage {
+      display: grid;
+      place-items: center;
+      min-height: 120px;
+      border: 1px dashed #d8cec0;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.56);
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .doc-list,
+    .transaction-list,
+    .event-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-item {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      box-shadow: none;
+      background: var(--surface-soft);
+    }
+
+    .check-dot {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ece7df;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .doc-item.ready .check-dot {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .doc-item.process .check-dot {
+      background: var(--yellow);
+      color: #fff;
+    }
+
+    .doc-title strong,
+    .transaction-title strong,
+    .event-title strong {
+      display: block;
+      line-height: 1.3;
+    }
+
+    .doc-title span,
+    .transaction-title span,
+    .event-title span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .finance-top {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .balance-card {
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .balance-card.light {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .balance-card.accent {
+      background: var(--accent-soft);
+      color: #c96012;
+    }
+
+    .balance-card span {
+      display: block;
+      color: currentColor;
+      opacity: 0.72;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .balance-card strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .transaction {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      box-shadow: none;
+      background: var(--surface-soft);
+    }
+
+    .money-flow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 94px;
+      min-height: 44px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 15px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .money-flow.out {
+      background: #f2eee8;
+      color: var(--ink);
+    }
+
+    .money-flow.wait {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+    }
+
+    .amount {
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .amount.minus {
+      color: var(--muted);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .event-card {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+      padding: 15px;
+      box-shadow: none;
+      background: var(--surface-soft);
+    }
+
+    .event-time {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .event-time strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 22px;
+      background: rgba(18, 19, 22, 0.78);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    .modal-card {
+      width: min(980px, 100%);
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 34px 90px rgba(0, 0, 0, 0.28);
+    }
+
+    .modal-image {
+      min-height: min(60vh, 560px);
+      background:
+        linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.56) 100%),
+        var(--modal-photo) center / cover;
+    }
+
+    .modal-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .modal-foot strong,
+    .modal-foot span {
+      display: block;
+    }
+
+    .modal-foot span {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .topbar-inner,
+      .hero,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .status-chip,
+      .client-pill {
+        justify-self: start;
+      }
+
+      .hero-facts,
+      .quick-grid,
+      .finance-top {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stage-card,
+      .doc-item,
+      .transaction,
+      .event-card {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-marker {
+        width: 38px;
+        height: 38px;
+      }
+
+      .stage-action,
+      .doc-item .action-btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 24px, 1180px);
+        padding-bottom: 28px;
+      }
+
+      .topbar {
+        margin: 0 0 16px;
+        padding: 12px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .section-card {
+        padding: 18px;
+      }
+
+      .hero-card {
+        min-height: 620px;
+      }
+
+      h1 {
+        margin-top: 74px;
+      }
+
+      .hero-facts,
+      .quick-grid,
+      .finance-top,
+      .photo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions .button,
+      .modal-foot .button {
+        width: 100%;
+      }
+
+      .section-head,
+      .summary-head,
+      .photo-stage-head,
+      .modal-foot {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#overview" aria-label="Urban Auto">
+        <span class="brand-mark">UA</span>
+        <span class="brand-text">
+          <strong>Urban Auto</strong>
+          <span>BMW X5 2023</span>
+        </span>
+      </a>
+
+      <div class="status-chip">Статус: <b>&nbsp;В дорозі до порту США</b></div>
+
+      <div class="client-pill">
+        <span>Олександр</span>
+        <span class="client-avatar">OK</span>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Навігація кабінету">
+      <a class="active" href="#overview">Огляд</a>
+      <a href="#tracking">Трекінг</a>
+      <a href="#photos">Фото</a>
+      <a href="#documents">Документи</a>
+      <a href="#finances">Фінанси</a>
+      <a href="#history">Історія</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero" id="overview">
+      <article class="hero-card">
+        <span class="eyebrow"><span class="dot"></span>Особистий кабінет авто</span>
+        <h1>2023 BMW X5 xDrive40i</h1>
+        <p class="hero-message">Авто забрано з майданчика та очікує доставку в порт США. Наступне оновлення буде після прийняття авто портом New Jersey.</p>
+
+        <div class="hero-facts">
+          <div>
+            <span>VIN</span>
+            <strong>5UXCR6C05P9A00000</strong>
+          </div>
+          <div>
+            <span>LOT</span>
+            <strong>11994950</strong>
+          </div>
+          <div>
+            <span>Клієнт</span>
+            <strong>Олександр Коваль</strong>
+          </div>
+          <div>
+            <span>ETA</span>
+            <strong>21.06.2026</strong>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a class="button primary" href="#tracking">Дивитись трекінг</a>
+          <a class="button ghost" href="#photos">Переглянути фото</a>
+          <a class="button ghost" href="https://t.me/urban_auto_manager" target="_blank" rel="noreferrer">Зв'язатися в Telegram</a>
+        </div>
+      </article>
+
+      <aside class="summary-card">
+        <div class="summary-head">
+          <div>
+            <h2>Головний статус</h2>
+            <p>Оновлено сьогодні о 14:05</p>
+          </div>
+          <span class="badge">Активний</span>
+        </div>
+
+        <div class="progress-number" aria-label="Прогрес 45 відсотків">
+          <div>
+            <strong>45%</strong>
+            <span>прогрес</span>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <span>Поточний статус</span>
+          <strong>Авто прямує до порту New Jersey</strong>
+        </div>
+
+        <div class="next-step">
+          <span>Наступний крок</span>
+          <strong>Прийняття автомобіля портом США</strong>
+        </div>
+
+        <div class="next-step">
+          <span>Орієнтовна дата</span>
+          <strong>10.06.2026</strong>
+        </div>
+      </aside>
+    </section>
+
+    <div class="quick-grid">
+      <div class="quick-card">
+        <span>Фото</span>
+        <strong>3 альбоми</strong>
+        <small>Аукціон, майданчик, доставка</small>
+      </div>
+      <div class="quick-card">
+        <span>Документи</span>
+        <strong>4 готові</strong>
+        <small>Title зараз в обробці</small>
+      </div>
+      <div class="quick-card">
+        <span>Баланс</span>
+        <strong>+$550</strong>
+        <small>Дані внесені вручну</small>
+      </div>
+      <div class="quick-card">
+        <span>Далі</span>
+        <strong>Порт США</strong>
+        <small>Орієнтовно 10.06.2026</small>
+      </div>
+    </div>
+
+    <section class="section-card" id="tracking">
+      <div class="section-head">
+        <div>
+          <h2>Трекінг автомобіля</h2>
+          <p>Кожен етап має статус, дату, коротке пояснення та файли, якщо вони вже додані.</p>
+        </div>
+        <span class="badge blue">9 етапів</span>
+      </div>
+
+      <ol class="timeline">
+        <li class="stage-card done">
+          <span class="stage-marker">1</span>
+          <div class="stage-main">
+            <h3>Куплено на аукціоні</h3>
+            <div class="stage-meta"><span class="badge green">Виконано</span><span class="badge blue">03.06.2026</span><span class="badge">12 фото</span></div>
+            <p>Автомобіль куплено на IAAI. Додано фото з аукціону та Auction Invoice.</p>
+          </div>
+          <a class="button light stage-action" href="#photos">Деталі</a>
+        </li>
+
+        <li class="stage-card done">
+          <span class="stage-marker">2</span>
+          <div class="stage-main">
+            <h3>Оплачено</h3>
+            <div class="stage-meta"><span class="badge green">Виконано</span><span class="badge blue">04.06.2026</span><span class="badge">2 документи</span></div>
+            <p>Оплату авто та аукціонних платежів підтверджено і відображено в балансі.</p>
+          </div>
+          <a class="button light stage-action" href="#documents">Деталі</a>
+        </li>
+
+        <li class="stage-card done">
+          <span class="stage-marker">3</span>
+          <div class="stage-main">
+            <h3>Забрано з майданчика</h3>
+            <div class="stage-meta"><span class="badge green">Виконано</span><span class="badge blue">05.06.2026</span><span class="badge">4 фото</span></div>
+            <p>Авто завантажено на евакуатор. Додано фото з доставки.</p>
+          </div>
+          <a class="button light stage-action" href="#photos">Деталі</a>
+        </li>
+
+        <li class="stage-card active">
+          <span class="stage-marker">4</span>
+          <div class="stage-main">
+            <h3>Доставлено в порт США</h3>
+            <div class="stage-meta"><span class="badge">Активний</span><span class="badge blue">ETA 10.06.2026</span></div>
+            <p>Авто прямує до порту New Jersey. Після прийняття портом з'являться фото та оновлення ETA.</p>
+          </div>
+          <a class="button light stage-action" href="#history">Деталі</a>
+        </li>
+
+        <li class="stage-card">
+          <span class="stage-marker">5</span>
+          <div class="stage-main">
+            <h3>Завантажено в контейнер</h3>
+            <div class="stage-meta"><span class="badge yellow">Очікується</span></div>
+            <p>Після формування контейнера буде додано номер контейнера та документи.</p>
+          </div>
+        </li>
+
+        <li class="stage-card">
+          <span class="stage-marker">6</span>
+          <div class="stage-main">
+            <h3>В дорозі</h3>
+            <div class="stage-meta"><span class="badge yellow">Очікується</span></div>
+            <p>Клієнт побачить маршрут, контейнер та прогноз прибуття до Європи.</p>
+          </div>
+        </li>
+
+        <li class="stage-card">
+          <span class="stage-marker">7</span>
+          <div class="stage-main">
+            <h3>Прибуло в порт Європи</h3>
+            <div class="stage-meta"><span class="badge yellow">Очікується</span></div>
+            <p>Після прибуття буде додано підтвердження розвантаження.</p>
+          </div>
+        </li>
+
+        <li class="stage-card">
+          <span class="stage-marker">8</span>
+          <div class="stage-main">
+            <h3>Митниця</h3>
+            <div class="stage-meta"><span class="badge yellow">Очікується</span></div>
+            <p>Митні документи та платежі з'являться в кабінеті після оформлення.</p>
+          </div>
+        </li>
+
+        <li class="stage-card">
+          <span class="stage-marker">9</span>
+          <div class="stage-main">
+            <h3>Готово до видачі</h3>
+            <div class="stage-meta"><span class="badge yellow">Очікується</span></div>
+            <p>Фінальний етап після закриття документів, платежів та підготовки авто до передачі.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section-card" id="photos">
+      <div class="section-head">
+        <div>
+          <h2>Фотографії</h2>
+          <p>Фото розділені за етапами, щоб швидко бачити, де і коли вони були додані.</p>
+        </div>
+        <span class="badge green">3 альбоми з фото</span>
+      </div>
+
+      <div class="photo-groups">
+        <article class="photo-stage">
+          <div class="photo-stage-head">
+            <h3>Фото з Аукціону</h3>
+            <span class="badge">12 фото</span>
+          </div>
+          <div class="photo-grid">
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Аукціону" style="--photo: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Аукціону" data-meta="03.06.2026 · Аукціон"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Аукціону" style="--photo: url('https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Аукціону" data-meta="03.06.2026 · Аукціон"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Аукціону" style="--photo: url('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Аукціону" data-meta="03.06.2026 · Аукціон"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Аукціону" style="--photo: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Аукціону" data-meta="03.06.2026 · Аукціон"></button>
+          </div>
+        </article>
+
+        <article class="photo-stage">
+          <div class="photo-stage-head">
+            <h3>Фото з Майданчику</h3>
+            <span class="badge">4 фото</span>
+          </div>
+          <div class="photo-grid">
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Майданчику" style="--photo: url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Майданчику" data-meta="04.06.2026 · Майданчик"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Майданчику" style="--photo: url('https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Майданчику" data-meta="04.06.2026 · Майданчик"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Майданчику" style="--photo: url('https://images.unsplash.com/photo-1541443131876-44b03de101c5?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Майданчику" data-meta="04.06.2026 · Майданчик"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з Майданчику" style="--photo: url('https://images.unsplash.com/photo-1562911791-c7a97b729ec5?auto=format&fit=crop&w=900&q=80')" data-title="Фото з Майданчику" data-meta="04.06.2026 · Майданчик"></button>
+          </div>
+        </article>
+
+        <article class="photo-stage">
+          <div class="photo-stage-head">
+            <h3>Фото з доставки</h3>
+            <span class="badge">4 фото</span>
+          </div>
+          <div class="photo-grid">
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з доставки" style="--photo: url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=900&q=80')" data-title="Фото з доставки" data-meta="05.06.2026 · Забір авто"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з доставки" style="--photo: url('https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=900&q=80')" data-title="Фото з доставки" data-meta="05.06.2026 · Забір авто"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з доставки" style="--photo: url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=900&q=80')" data-title="Фото з доставки" data-meta="05.06.2026 · Забір авто"></button>
+            <button class="photo-thumb" type="button" aria-label="Відкрити фото з доставки" style="--photo: url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80')" data-title="Фото з доставки" data-meta="05.06.2026 · Забір авто"></button>
+          </div>
+        </article>
+
+        <article class="photo-stage">
+          <div class="photo-stage-head">
+            <h3>Порт США</h3>
+            <span class="badge blue">Після прийняття</span>
+          </div>
+          <div class="empty-stage">Фото з порту США з'являться після прийняття авто</div>
+        </article>
+
+        <article class="photo-stage">
+          <div class="photo-stage-head">
+            <h3>Контейнер</h3>
+            <span class="badge blue">Після завантаження</span>
+          </div>
+          <div class="empty-stage">Фото будуть доступні після завантаження автомобіля в контейнер</div>
+        </article>
+      </div>
+    </section>
+
+    <div class="split">
+      <section class="section-card" id="documents">
+        <div class="section-head">
+          <div>
+            <h2>Документи</h2>
+            <p>Чек-лист показує, що вже готово, а що ще в обробці або очікується.</p>
+          </div>
+          <span class="badge green">4 готові</span>
+        </div>
+
+        <div class="doc-list">
+          <article class="doc-item ready">
+            <span class="check-dot">✓</span>
+            <div class="doc-title"><strong>Auction Invoice</strong><span>Додано: 03.06.2026</span></div>
+            <span class="badge green">Додано</span>
+            <button class="action-btn" type="button">Переглянути</button>
+            <button class="action-btn" type="button">Завантажити</button>
+          </article>
+          <article class="doc-item ready">
+            <span class="check-dot">✓</span>
+            <div class="doc-title"><strong>Bill of Sale</strong><span>Додано: 04.06.2026</span></div>
+            <span class="badge green">Додано</span>
+            <button class="action-btn" type="button">Переглянути</button>
+            <button class="action-btn" type="button">Завантажити</button>
+          </article>
+          <article class="doc-item process">
+            <span class="check-dot">•</span>
+            <div class="doc-title"><strong>Title</strong><span>Статус: в обробці</span></div>
+            <span class="badge yellow">В обробці</span>
+          </article>
+          <article class="doc-item ready">
+            <span class="check-dot">✓</span>
+            <div class="doc-title"><strong>Export Documents</strong><span>Додано: 06.06.2026</span></div>
+            <span class="badge green">Додано</span>
+            <button class="action-btn" type="button">Переглянути</button>
+            <button class="action-btn" type="button">Завантажити</button>
+          </article>
+          <article class="doc-item ready">
+            <span class="check-dot">✓</span>
+            <div class="doc-title"><strong>Container Documents</strong><span>Підготовлено до відправки</span></div>
+            <span class="badge green">Додано</span>
+            <button class="action-btn" type="button">Переглянути</button>
+            <button class="action-btn" type="button">Завантажити</button>
+          </article>
+          <article class="doc-item">
+            <span class="check-dot">○</span>
+            <div class="doc-title"><strong>Customs Documents</strong><span>Статус: очікується після прибуття в Європу</span></div>
+            <span class="badge yellow">Очікується</span>
+          </article>
+          <article class="doc-item">
+            <span class="check-dot">○</span>
+            <div class="doc-title"><strong>Final Documents</strong><span>Статус: очікується після завершення процесу</span></div>
+            <span class="badge yellow">Очікується</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card" id="finances">
+        <div class="section-head">
+          <div>
+            <h2>Фінанси</h2>
+            <p>Баланс внесених коштів, використаних оплат і майбутніх витрат.</p>
+          </div>
+          <span class="badge">Вручну</span>
+        </div>
+
+        <div class="finance-top">
+          <div class="balance-card"><span>Внесено</span><strong>$18 500</strong></div>
+          <div class="balance-card light"><span>Використано</span><strong>$17 950</strong></div>
+          <div class="balance-card light"><span>Очікується до оплати</span><strong>$1 600</strong></div>
+          <div class="balance-card accent"><span>Баланс</span><strong>+$550</strong></div>
+        </div>
+
+        <div class="transaction-list">
+          <article class="transaction">
+            <span class="money-flow">+ $1 500</span>
+            <div class="transaction-title"><strong>Депозит</strong><span>03.06.2026 · внесено клієнтом</span></div>
+            <span class="badge green">Внесено</span>
+          </article>
+          <article class="transaction">
+            <span class="money-flow">+ $17 000</span>
+            <div class="transaction-title"><strong>Оплата авто</strong><span>04.06.2026 · основний платіж</span></div>
+            <span class="badge green">Внесено</span>
+          </article>
+          <article class="transaction">
+            <span class="money-flow out">- $16 200</span>
+            <div class="transaction-title"><strong>Вартість авто на аукціоні</strong><span>IAAI invoice</span></div>
+            <span class="badge blue">Списано</span>
+          </article>
+          <article class="transaction">
+            <span class="money-flow out">- $900</span>
+            <div class="transaction-title"><strong>Аукціонний збір</strong><span>Buyer fee</span></div>
+            <span class="badge blue">Списано</span>
+          </article>
+          <article class="transaction">
+            <span class="money-flow wait">- $1 600</span>
+            <div class="transaction-title"><strong>Логістика</strong><span>Очікується після порту США</span></div>
+            <span class="badge yellow">Очікується</span>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="section-card" id="history">
+        <div class="section-head">
+          <div>
+            <h2>Історія</h2>
+            <p>Стрічка всіх оновлень, які бачить клієнт у кабінеті.</p>
+          </div>
+          <span class="badge blue">Сьогодні</span>
+        </div>
+
+        <div class="event-list">
+          <article class="event-card">
+            <span class="event-time"><strong>14:05</strong>Сьогодні</span>
+            <div class="event-title"><strong>Додано 4 фото з доставки</strong><span>Фото з евакуатора доступні в розділі фотографій.</span></div>
+            <span class="badge green">Відправлено в Telegram</span>
+          </article>
+          <article class="event-card">
+            <span class="event-time"><strong>13:20</strong>Сьогодні</span>
+            <div class="event-title"><strong>Авто забрано з майданчика</strong><span>Статус оновлено: авто прямує до порту New Jersey.</span></div>
+            <span class="badge green">Відправлено в Telegram</span>
+          </article>
+          <article class="event-card">
+            <span class="event-time"><strong>18:00</strong>Вчора</span>
+            <div class="event-title"><strong>Додано Auction Invoice</strong><span>Документ доступний для перегляду та завантаження.</span></div>
+            <span class="badge green">Відправлено в Telegram</span>
+          </article>
+          <article class="event-card">
+            <span class="event-time"><strong>21:30</strong>03.06.2026</span>
+            <div class="event-title"><strong>Авто куплено на аукціоні</strong><span>VIN, LOT та перші фото додано в кабінет.</span></div>
+            <span class="badge green">Відправлено в Telegram</span>
+          </article>
+        </div>
+      </section>
+  </main>
+
+  <div class="modal" id="photoModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-image" id="modalImage"></div>
+      <div class="modal-foot">
+        <div>
+          <strong id="modalTitle">Фото авто</strong>
+          <span id="modalMeta">Дата та етап</span>
+        </div>
+        <button class="button light" type="button" id="closeModal">Закрити</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.querySelector("#photoModal");
+    const modalImage = document.querySelector("#modalImage");
+    const modalTitle = document.querySelector("#modalTitle");
+    const modalMeta = document.querySelector("#modalMeta");
+    const closeModal = document.querySelector("#closeModal");
+
+    document.querySelectorAll(".photo-thumb").forEach((photo) => {
+      photo.addEventListener("click", () => {
+        modalTitle.textContent = photo.dataset.title || "Фото авто";
+        modalMeta.textContent = photo.dataset.meta || "Фото автомобіля";
+        modalImage.style.setProperty("--modal-photo", getComputedStyle(photo).getPropertyValue("--photo"));
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    const hideModal = () => {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    };
+
+    closeModal.addEventListener("click", hideModal);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) hideModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") hideModal();
+    });
+  </script>
+</body>
+</html>
